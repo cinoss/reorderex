@@ -22,7 +22,7 @@ defmodule Reorderex.MixProject do
   defp deps do
     [
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
-      {:stream_data, "~> 0.4.3"}
+      {:stream_data, "~> 0.4.3", only: [:test, :dev]}
     ]
   end
 end
