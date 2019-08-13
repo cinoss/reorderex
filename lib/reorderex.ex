@@ -87,6 +87,6 @@ defmodule Reorderex do
     do: convert_acc(div(r, @digits_len), [@digits |> Enum.at(rem(r, @digits_len)) | acc])
 
   def next_index(_count \\ 1) do
-    :os.system_time(:millisecond) |> convert
+    :os.system_time(:millisecond) |> convert |> to_string
   end
 end

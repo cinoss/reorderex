@@ -63,6 +63,8 @@ defmodule ReorderexTest do
       :timer.sleep(10)
       b = Reorderex.next_index()
       assert a < b
+      assert is_binary(a)
+      assert is_binary(b)
     end
   end
 end
