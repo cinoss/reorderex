@@ -22,12 +22,9 @@ defmodule ReorderexTest do
         b = Reorderex.filter(b)
 
         if a != b do
-          [a, b] = if a > b, do: [b, a], else: [a, b]
-
-          # [a, b] |> IO.inspect()
-
           avg = Reorderex.between(a, b)
-          # |> IO.inspect()
+
+          [a, b] = if a > b, do: [b, a], else: [a, b]
 
           assert a < avg
           assert avg < b
@@ -43,16 +40,21 @@ defmodule ReorderexTest do
 
     test "should survive edge cases" do
       for [a, b] <- [
+            ["", "K"],
             ["Jh", "K"],
             ["Jz", "K"],
             ["a", "a1"],
-            ["a", "a01"]
+            ["a", "a01"],
+            [nil, "a01"],
+            ["A", nil]
           ] do
         avg = Reorderex.between(a, b)
 
-        assert a < avg
-        assert avg < b
-        assert String.length(avg) <= max(String.length(a), String.length(b)) + 1
+        assert (a || "") < avg
+        assert avg < (b || Reorderex.next_index())
+
+        assert String.length(avg) <=
+                 max(String.length(a || ""), String.length(b || Reorderex.next_index())) + 1
       end
     end
   end

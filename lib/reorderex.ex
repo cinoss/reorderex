@@ -7,6 +7,7 @@ defmodule Reorderex do
   @zero List.first(@digits)
   # @max_digit List.last(@digits)
   @digits_len length(@digits)
+  @middle_digit Enum.at(@digits, div(@digits_len, 2))
 
   @doc """
   Between.
@@ -19,14 +20,32 @@ defmodule Reorderex do
       iex> Reorderex.between("a", "a")
       "a"
 
+      iex> Reorderex.between(nil, "a")
+      "I"
+
+      iex> Reorderex.between(nil, nil)
+      nil
+
   """
   def between(a, b) when is_binary(a) and is_binary(b) do
     try do
+      [a, b] = if a > b, do: [b, a], else: [a, b]
+
       between!(a |> to_charlist, b |> to_charlist)
       |> to_string
     rescue
       _e in ArgumentError -> a
     end
+  end
+
+  def between(nil, nil), do: nil
+
+  def between(nil, b) when is_binary(b) do
+    between("", b)
+  end
+
+  def between(a, nil) when is_binary(a) do
+    between(a, next_index())
   end
 
   def between!([fa | ra] = a, [fb | rb]) do
@@ -41,8 +60,7 @@ defmodule Reorderex do
           [@digits |> Enum.at(div(pa + pb, 2))]
 
         pa + 1 == pb ->
-          a ++ [Enum.at(@digits, div(@digits_len, 2))]
-          # [fa | between!(ra, [@max_digit])]
+          a ++ [@middle_digit]
       end
     end
   end
