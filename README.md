@@ -12,7 +12,7 @@ The package can be installed by adding `reorderex` to your list of dependencies 
 ```elixir
 def deps do
   [
-    {:reorderex, "~> 0.1.1"}
+    {:reorderex, "~> 0.1.2"}
   ]
 end
 ```

@@ -60,12 +60,12 @@ defmodule ReorderexTest do
     end
 
     test "should not increase in length so rapidly" do
-      times = 1000
+      times = 5000
 
-      assert times / 5 + 1 >=
+      assert times / 30 + 1 >=
                1..times
                |> Enum.reduce(Reorderex.next_index(), fn _, acc ->
-                 Reorderex.between("", acc)
+                 Reorderex.between(nil, acc)
                end)
                |> String.length()
     end

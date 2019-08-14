@@ -27,7 +27,7 @@ defmodule Reorderex do
       "a"
 
       iex> Reorderex.between(nil, "a")
-      "I"
+      "Y"
 
       iex> Reorderex.between("0", nil)
       "3"
@@ -62,7 +62,12 @@ defmodule Reorderex do
   def between!(nil, nil), do: nil
 
   def between!(nil, b) when is_binary(b) do
-    charlist_between!([], b |> to_charlist)
+    b_charlist = b |> to_charlist
+
+    1..5
+    |> Enum.reduce([], fn _, acc ->
+      charlist_between!(acc, b_charlist)
+    end)
     |> to_string
   end
 
