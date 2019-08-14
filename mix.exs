@@ -37,7 +37,7 @@ defmodule Reorderex.MixProject do
   end
 
   def application(_) do
-    [extra_applications: [:logger, :postgrex]]
+    [extra_applications: [:logger]]
   end
 
   defp deps do
