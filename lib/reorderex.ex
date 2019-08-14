@@ -1,6 +1,6 @@
 defmodule Reorderex do
   @moduledoc """
-  Documentation for Reorderex.
+  An elixir helper library for database list reordering functionality.
   """
 
   @digits '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -10,12 +10,15 @@ defmodule Reorderex do
   @middle_digit Enum.at(@digits, div(@digits_len, 2))
 
   @doc """
-  Between.
+  Returns a string that is greater than the first argument and smaller than the second argument.
 
   ## Examples
 
       iex> Reorderex.between("a", "c")
       "b"
+
+      iex> Reorderex.between("a", "b")
+      "aV"
 
       iex> Reorderex.between("a", "a")
       "a"
@@ -23,34 +26,58 @@ defmodule Reorderex do
       iex> Reorderex.between(nil, "a")
       "I"
 
+      iex> Reorderex.between("0", nil)
+      "3"
+
       iex> Reorderex.between(nil, nil)
       nil
 
   """
-  def between(a, b) when is_binary(a) and is_binary(b) do
+  @spec between(binary() | nil, binary() | nil) :: binary() | nil
+  def between(a, b) do
     try do
-      [a, b] = if a > b, do: [b, a], else: [a, b]
-
-      between!(a |> to_charlist, b |> to_charlist)
-      |> to_string
+      between!(a, b)
     rescue
       _e in ArgumentError -> a
     end
   end
 
-  def between(nil, nil), do: nil
+  @doc """
+  Behaves the same as `between/2` except that it will raise when the two strings are equals.
 
-  def between(nil, b) when is_binary(b) do
-    between("", b)
+  ## Examples
+
+      iex> Reorderex.between!("a", "c")
+      "b"
+
+      iex> Reorderex.between!("a", "a0")
+      ** (ArgumentError) Given strings are equals
+
+  """
+  @spec between!(binary() | nil, binary() | nil) ::
+          binary() | nil | no_return
+  def between!(nil, nil), do: nil
+
+  def between!(nil, b) when is_binary(b) do
+    charlist_between!([], b |> to_charlist)
+    |> to_string
   end
 
-  def between(a, nil) when is_binary(a) do
-    between(a, next_index())
+  def between!(a, nil) when is_binary(a) do
+    charlist_between!(a |> to_charlist, next_index() |> to_charlist)
+    |> to_string
   end
 
-  def between!([fa | ra] = a, [fb | rb]) do
+  def between!(a, b) when is_binary(a) and is_binary(b) do
+    [a, b] = if a > b, do: [b, a], else: [a, b]
+
+    charlist_between!(a |> to_charlist, b |> to_charlist)
+    |> to_string
+  end
+
+  defp charlist_between!([fa | ra] = a, [fb | rb]) do
     if fa == fb do
-      [fa | between!(ra, rb)]
+      [fa | charlist_between!(ra, rb)]
     else
       pa = @digits |> Enum.find_index(&(&1 == fa))
       pb = @digits |> Enum.find_index(&(&1 == fb))
@@ -65,13 +92,14 @@ defmodule Reorderex do
     end
   end
 
-  def between!([], [_ | _] = b), do: between!([@zero], b)
-  def between!([_ | _] = a, []), do: between!(a, [@zero])
+  defp charlist_between!([], [_ | _] = b), do: charlist_between!([@zero], b)
+  defp charlist_between!([_ | _] = a, []), do: charlist_between!(a, [@zero])
 
-  def between!([], []) do
-    raise ArgumentError, message: "Given numbers are equals"
+  defp charlist_between!([], []) do
+    raise ArgumentError, message: "Given strings are equals"
   end
 
+  @doc false
   def filter(s) do
     s
     |> to_charlist()
@@ -87,24 +115,18 @@ defmodule Reorderex do
     |> to_string()
   end
 
-  @doc """
-  Convert.
-
-  ## Examples
-
-      iex> Reorderex.convert(62)
-      '10'
-
-  """
-
-  def convert(num), do: convert_acc(num, [])
+  defp convert(num), do: convert_acc(num, [])
 
   defp convert_acc(0, acc), do: acc
 
   defp convert_acc(r, acc),
     do: convert_acc(div(r, @digits_len), [@digits |> Enum.at(rem(r, @digits_len)) | acc])
 
+  @doc """
+  Returns current EPOCH in base 62.
+
+  """
   def next_index(_count \\ 1) do
-    :os.system_time(:millisecond) |> convert |> to_string
+    :os.system_time(:micro_seconds) |> convert |> to_string
   end
 end

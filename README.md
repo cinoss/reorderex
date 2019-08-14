@@ -1,6 +1,6 @@
 # Reorderex
 
-    "An elixir helper library for database list reordering functionality"
+An elixir helper library for database list reordering functionality.
 
 ## Installation
 
@@ -9,7 +9,7 @@ The package can be installed by adding `reorderex` to your list of dependencies 
 ```elixir
 def deps do
   [
-    {:reorderex, "~> 0.1.0"}
+    {:reorderex, "~> 0.1.1"}
   ]
 end
 ```

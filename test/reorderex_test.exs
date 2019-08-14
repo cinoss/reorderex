@@ -45,8 +45,9 @@ defmodule ReorderexTest do
             ["Jz", "K"],
             ["a", "a1"],
             ["a", "a01"],
+            ["0", "0011"],
             [nil, "a01"],
-            ["A", nil]
+            ["0", nil]
           ] do
         avg = Reorderex.between(a, b)
 
@@ -57,12 +58,22 @@ defmodule ReorderexTest do
                  max(String.length(a || ""), String.length(b || Reorderex.next_index())) + 1
       end
     end
+
+    test "should not increase in length so rapidly" do
+      times = 1000
+
+      assert times / 5 + 1 >=
+               1..times
+               |> Enum.reduce(Reorderex.next_index(), fn _, acc ->
+                 Reorderex.between("", acc)
+               end)
+               |> String.length()
+    end
   end
 
   describe "next_index/1" do
     test "should be increasing" do
       a = Reorderex.next_index()
-      :timer.sleep(10)
       b = Reorderex.next_index()
       assert a < b
       assert is_binary(a)
