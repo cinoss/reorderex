@@ -8,3 +8,5 @@ ExUnit.start()
 # :timer.sleep(60_000)
 # TestRepo.start_link()
 # Ecto.Adapters.SQL.Sandbox.mode(TestRepo, :manual)
+
+Ecto.Migrator.up(Reorderex.TestRepo, 0, Reorderex.TestMigration, log: false)

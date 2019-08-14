@@ -1,4 +1,4 @@
-defmodule Ecto.Integration.Migration do
+defmodule Reorderex.TestMigration do
   @moduledoc false
   use Ecto.Migration
 
