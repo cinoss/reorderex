@@ -12,7 +12,14 @@ defmodule Reorderex.MixProject do
       package: package(),
       deps: deps(),
       name: "Reorderex",
-      source_url: "https://github.com/cinoss/reorderex"
+      source_url: "https://github.com/cinoss/reorderex",
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test
+      ]
     ]
   end
 
@@ -26,7 +33,8 @@ defmodule Reorderex.MixProject do
     [
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
       {:stream_data, "~> 0.4.3", only: [:test, :dev]},
-      {:ex_doc, "~> 0.14", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.10", only: :test}
     ]
   end
 

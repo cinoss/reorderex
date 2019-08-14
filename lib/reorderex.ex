@@ -17,6 +17,9 @@ defmodule Reorderex do
       iex> Reorderex.between("a", "c")
       "b"
 
+      iex> Reorderex.between("c", "a")
+      "b"
+
       iex> Reorderex.between("a", "b")
       "aV"
 
@@ -93,7 +96,6 @@ defmodule Reorderex do
   end
 
   defp charlist_between!([], [_ | _] = b), do: charlist_between!([@zero], b)
-  defp charlist_between!([_ | _] = a, []), do: charlist_between!(a, [@zero])
 
   defp charlist_between!([], []) do
     raise ArgumentError, message: "Given strings are equals"

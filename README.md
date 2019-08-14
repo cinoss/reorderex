@@ -1,5 +1,7 @@
 # Reorderex
 
+[![hex.pm version](https://img.shields.io/hexpm/v/reorderex.svg)](https://hex.pm/packages/reorderex) [![hex.pm downloads](https://img.shields.io/hexpm/dt/reorderex.svg)](https://hex.pm/packages/reorderex)
+
 An elixir helper library for database list reordering functionality.
 
 ## Installation
