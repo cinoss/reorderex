@@ -7,5 +7,5 @@ elixir:
 
 jobs:
   include:
-    - script: MIX_ENV=test mix do deps.get, compile, coveralls
+    - script: MIX_ENV=test mix do deps.get, compile, coveralls.travis
     - script: mix credo --strict
