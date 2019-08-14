@@ -1,4 +1,6 @@
 defmodule ReorderexTest do
+  @moduledoc false
+
   use ExUnit.Case
   use ExUnitProperties
 
