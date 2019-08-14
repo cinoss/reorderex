@@ -1,6 +1,6 @@
 # Reorderex
 
-[![Build Status](https://travis-ci.com/cinoss/reorderex.svg?branch=master)](https://travis-ci.com/cinoss/reorderex)[![Coverage Status](https://coveralls.io/repos/cinoss/reorderex/badge.svg?branch=master)] [![hex.pm version](https://img.shields.io/hexpm/v/reorderex.svg)](https://hex.pm/packages/reorderex) [![hex.pm downloads](https://img.shields.io/hexpm/dt/reorderex.svg)](https://hex.pm/packages/reorderex)
+[![Build Status](https://travis-ci.com/cinoss/reorderex.svg?branch=master)](https://travis-ci.com/cinoss/reorderex) [![Coverage Status](https://coveralls.io/repos/cinoss/reorderex/badge.svg?branch=master)](https://coveralls.io/r/cinoss/reorderex?branch=master) [![hex.pm version](https://img.shields.io/hexpm/v/reorderex.svg)](https://hex.pm/packages/reorderex) [![hex.pm downloads](https://img.shields.io/hexpm/dt/reorderex.svg)](https://hex.pm/packages/reorderex)
 
 An elixir helper library for database list reordering functionality.
 

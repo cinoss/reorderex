@@ -5,4 +5,4 @@ elixir:
   - "1.8"
   - "1.9"
 script:
-  - MIX_ENV=test mix do deps.get, compile, coveralls.travis
+  - MIX_ENV=test mix do deps.get, compile, coveralls
