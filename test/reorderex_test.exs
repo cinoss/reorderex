@@ -1,4 +1,6 @@
 defmodule ReorderexTest do
+  @moduledoc false
+
   use ExUnit.Case
   use ExUnitProperties
 
@@ -6,8 +8,8 @@ defmodule ReorderexTest do
 
   describe "filter/1" do
     test "abc" do
-      assert Reorderex.filter("abc00") == "abc"
-      assert Reorderex.filter("abc000") == Reorderex.filter("abc00")
+      assert Reorderex.Helper.filter("abc00") == "abc"
+      assert Reorderex.Helper.filter("abc000") == Reorderex.Helper.filter("abc00")
     end
   end
 
@@ -18,11 +20,11 @@ defmodule ReorderexTest do
               b <- StreamData.string(:ascii, max_length: 10),
               max_run: 1000
             ) do
-        a = Reorderex.filter(a)
-        b = Reorderex.filter(b)
+        a = Reorderex.Helper.filter(a)
+        b = Reorderex.Helper.filter(b)
 
         if a != b do
-          avg = Reorderex.between(a, b)
+          avg = Reorderex.Helper.between(a, b)
 
           [a, b] = if a > b, do: [b, a], else: [a, b]
 
@@ -30,7 +32,7 @@ defmodule ReorderexTest do
           assert avg < b
           assert String.length(avg) <= max(String.length(a), String.length(b)) + 1
         else
-          avg = Reorderex.between(a, b)
+          avg = Reorderex.Helper.between(a, b)
 
           assert a == avg
           assert avg == b
@@ -49,13 +51,13 @@ defmodule ReorderexTest do
             [nil, "a01"],
             ["0", nil]
           ] do
-        avg = Reorderex.between(a, b)
+        avg = Reorderex.Helper.between(a, b)
 
         assert (a || "") < avg
-        assert avg < (b || Reorderex.next_index())
+        assert avg < (b || Reorderex.next_score())
 
         assert String.length(avg) <=
-                 max(String.length(a || ""), String.length(b || Reorderex.next_index())) + 1
+                 max(String.length(a || ""), String.length(b || Reorderex.next_score())) + 1
       end
     end
 
@@ -64,17 +66,17 @@ defmodule ReorderexTest do
 
       assert times / 30 + 1 >=
                1..times
-               |> Enum.reduce(Reorderex.next_index(), fn _, acc ->
-                 Reorderex.between(nil, acc)
+               |> Enum.reduce(Reorderex.next_score(), fn _, acc ->
+                 Reorderex.Helper.between(nil, acc)
                end)
                |> String.length()
     end
   end
 
-  describe "next_index/1" do
+  describe "next_score/1" do
     test "should be increasing" do
-      a = Reorderex.next_index()
-      b = Reorderex.next_index()
+      a = Reorderex.next_score()
+      b = Reorderex.next_score()
       assert a < b
       assert is_binary(a)
       assert is_binary(b)
