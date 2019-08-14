@@ -38,11 +38,9 @@ defmodule Reorderex do
   """
   @spec between(binary() | nil, binary() | nil) :: binary() | nil
   def between(a, b) do
-    try do
-      between!(a, b)
-    rescue
-      _e in ArgumentError -> a
-    end
+    between!(a, b)
+  rescue
+    _e in ArgumentError -> a
   end
 
   @doc """
@@ -72,15 +70,15 @@ defmodule Reorderex do
   end
 
   def between!(a, nil) when is_binary(a) do
-    charlist_between!(a |> to_charlist, next_index() |> to_charlist)
-    |> to_string
+    res = charlist_between!(a |> to_charlist, next_index() |> to_charlist)
+    res |> to_string
   end
 
   def between!(a, b) when is_binary(a) and is_binary(b) do
     [a, b] = if a > b, do: [b, a], else: [a, b]
 
-    charlist_between!(a |> to_charlist, b |> to_charlist)
-    |> to_string
+    res = charlist_between!(a |> to_charlist, b |> to_charlist)
+    res |> to_string
   end
 
   defp charlist_between!([fa | ra] = a, [fb | rb]) do
@@ -90,12 +88,11 @@ defmodule Reorderex do
       pa = @digits |> Enum.find_index(&(&1 == fa))
       pb = @digits |> Enum.find_index(&(&1 == fb))
 
-      cond do
-        pa + 1 < pb ->
-          [@digits |> Enum.at(div(pa + pb, 2))]
-
-        pa + 1 == pb ->
-          a ++ [@middle_digit]
+      if pa + 1 < pb do
+        [@digits |> Enum.at(div(pa + pb, 2))]
+      else
+        # pa + 1 == pb
+        a ++ [@middle_digit]
       end
     end
   end

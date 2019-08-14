@@ -1,4 +1,5 @@
 defmodule Reorderex.MixProject do
+  @moduledoc false
   use Mix.Project
 
   def project do
@@ -34,7 +35,8 @@ defmodule Reorderex.MixProject do
       {:mix_test_watch, "~> 0.8", only: :dev, runtime: false},
       {:stream_data, "~> 0.4.3", only: [:test, :dev]},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
-      {:excoveralls, "~> 0.10", only: :test}
+      {:excoveralls, "~> 0.10", only: :test},
+      {:credo, "~> 1.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 
