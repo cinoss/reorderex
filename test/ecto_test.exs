@@ -14,20 +14,18 @@ defmodule Reorderex.EctoTest do
   alias Reorderex.TestRepo, as: Repo
   import Ecto.Query
 
-  def get_all_ids do
-    Photo
-    |> order_by(:score)
-    |> Repo.all()
-    |> Enum.map(& &1.id)
-  end
+  def get_all_photos, do: Photo |> order_by(:score) |> Repo.all()
+
+  def get_all_ids, do: get_all_photos() |> Enum.map(& &1.id)
 
   describe "ecto" do
     test "123" do
-      photo1 = Repo.insert!(%Photo{score: Reorderex.next_score()})
-      photo2 = Repo.insert!(%Photo{score: Reorderex.next_score()})
-      photo3 = Repo.insert!(%Photo{score: Reorderex.next_score()})
+      1..3
+      |> Enum.each(fn _ ->
+        Repo.insert!(%Photo{})
+      end)
 
-      assert get_all_ids() == [photo1.id, photo2.id, photo3.id]
+      [photo1, photo2, photo3] = get_all_photos()
 
       photo3
       |> Reorderex.Ecto.insert_after(photo1.id, Repo)
@@ -43,11 +41,12 @@ defmodule Reorderex.EctoTest do
     end
 
     test "move to last" do
-      photo1 = Repo.insert!(%Photo{score: Reorderex.next_score()})
-      photo2 = Repo.insert!(%Photo{score: Reorderex.next_score()})
-      photo3 = Repo.insert!(%Photo{score: Reorderex.next_score()})
+      1..3
+      |> Enum.each(fn _ ->
+        Repo.insert!(%Photo{})
+      end)
 
-      assert get_all_ids() == [photo1.id, photo2.id, photo3.id]
+      [photo1, photo2, photo3] = get_all_photos()
 
       photo2
       |> Reorderex.Ecto.insert_after(photo3.id, Repo)

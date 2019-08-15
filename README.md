@@ -16,6 +16,16 @@ def deps do
 end
 ```
 
+You can **optionally** add `Reorderex.Clock` to make `Reorderer.next_score` become strictly monotonic.
+
+```elixir
+children = [
+  #...
+  Reorderex.Clock
+  #...
+]
+```
+
 ## Usage with Ecto
 
 ### Table-wise ordering
