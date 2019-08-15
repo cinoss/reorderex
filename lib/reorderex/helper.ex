@@ -138,6 +138,6 @@ defmodule Reorderex.Helper do
   Returns current EPOCH in base 62.
   """
   def next_score(_count \\ 1) do
-    System.monotonic_time(:microsecond) |> convert() |> to_string
+    Reorderex.Clock.next_tick() |> convert() |> to_string
   end
 end

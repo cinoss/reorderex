@@ -5,7 +5,8 @@ defmodule Reorderex.TestApplication do
 
   def start(_type, _args) do
     children = [
-      Reorderex.TestRepo
+      Reorderex.TestRepo,
+      Reorderex.Clock
     ]
 
     opts = [strategy: :one_for_one, name: Reorderex.Supervisor]
