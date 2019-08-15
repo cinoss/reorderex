@@ -16,7 +16,7 @@ def deps do
 end
 ```
 
-You can **optionally** add `Reorderex.Clock` to make `Reorderer.next_score` become strictly monotonic.
+You can **optionally** add `Reorderex.Clock` to supervision tree to make `Reorderer.next_score` become strictly monotonic.
 
 ```elixir
 children = [
